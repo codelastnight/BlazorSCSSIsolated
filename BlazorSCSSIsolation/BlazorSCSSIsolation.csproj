@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.0" PrivateAssets="all" />
+    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+  </ItemGroup>
+
+  <Target Name="SassCheck" BeforeTargets="PreBuild">
+    <Exec Command="sass --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCodeSass" />
+    </Exec>
+    <Error Condition="'$(ErrorCodeSass)' != '0'" Text="dart-sass is required for this project. install globally with 'npm i -g sass' " />
+  </Target>
+  
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="sass Styles/main.scss:wwwroot/css/main.css Pages:Pages Shared:Shared --style compressed --load-path=Styles" />
+  </Target>
+
+</Project>
